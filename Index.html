@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Jualan Rizgant</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #000;
+      background-image: url('foto.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: 189px auto;
+      background-color: rgba(232, 255, 255, 0.9);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 28px;
+      color: #111;
+    }
+
+    p {
+      font-size: 18px;
+      color: #333;
+    }
+
+    .button-container {
+      margin-top: 20px;
+    }
+
+    .button {
+      background-color: black;
+      color: white;
+      border: none;
+      padding: 15px 25px;
+      margin: 5px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .button:hover {
+      background-color: #333;
+    }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 10;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.5);
+    }
+
+    .modal-content {
+      background-color: #fff;
+      margin: 15% auto;
+      padding: 20px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 400px;
+      text-align: left;
+    }
+
+    .close {
+      float: right;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 10px;
+      margin-bottom: 15px;
+    }
+
+    .price {
+      font-weight: bold;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>WELCOME TO RAZER RTM STORE</h1>
+    <p>Pilih paket yang ingin Anda beli:</p>
+    <div class="button-container">
+      <button class="button" onclick="openModal('ic')">1. Uang IC 📦</button>
+      <button class="button" onclick="openModal('mainan')">2. Mainan 📦</button>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h2 id="modal-title">Pesan Produk</h2>
+      <label>Jumlah:</label>
+      <input type="number" id="jumlah" value="1" min="1" onchange="hitungHarga()">
+      <p class="price">Total Harga: <span id="total">Rp 0</span></p>
+      <button class="button" onclick="kirimWhatsApp()">Pesan Sekarang</button>
+    </div>
+  </div>
+
+  <script>
+    let produk = '';
+    const harga = {
+      ic: 1000,
+      mainan: 5000
+    };
+
+    function openModal(jenis) {
+      produk = jenis;
+      document.getElementById('modal').style.display = 'block';
+      document.getElementById('modal-title').textContent = jenis === 'ic' ? 'Pesan Uang IC 1 = 100jt' : 'Pesan Mainan de only';
+      document.getElementById('jumlah').value = 1;
+      hitungHarga();
+    }
+
+    function closeModal() {
+      document.getElementById('modal').style.display = 'none';
+    }
+
+    function hitungHarga() {
+      const jumlah = parseInt(document.getElementById('jumlah').value);
+      const total = jumlah * harga[produk];
+      document.getElementById('total').textContent = 'Rp ' + total.toLocaleString('id-ID');
+    }
+
+    function kirimWhatsApp() {
+      const jumlah = parseInt(document.getElementById('jumlah').value);
+      const total = jumlah * harga[produk];
+      const namaProduk = produk === 'ic' ? 'Uang IC (100jt)' : 'Mainan';
+      const pesan = `Halo, saya ingin pesan:\nProduk: ${namaProduk}\nJumlah: ${jumlah}\nTotal: Rp ${total.toLocaleString('id-ID')}`;
+
+      const nomor = '6283193061252';
+      const url = `https://wa.me/${nomor}?text=${encodeURIComponent(pesan)}`;
+      window.open(url, '_blank');
+    }
+  </script>
+
+</body>
+</html>
